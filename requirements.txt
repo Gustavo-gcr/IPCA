@@ -1,0 +1,8 @@
+cx-Freeze==6.15.0
+matplotlib==3.9.0
+matplotlib-inline==0.1.6
+openpyxl==3.1.5
+pandas==2.2.2
+streamlit==1.36.0
+streamlit-aggrid==1.0.5
+plotly==5.17.0
