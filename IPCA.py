@@ -194,15 +194,19 @@ if pagina_selecionada == "Atualizar Planilha":
         mes = st.number_input("Digite o mês (número, ex: 09 para Setembro):", min_value=1, max_value=12, format="%02d")
         ano = st.number_input("Digite o ano:", min_value=2024, max_value=datetime.today().year + 10)
         confirmar_atualizacao = st.form_submit_button("Confirmar Data Atualizada")
-        
+
         if confirmar_atualizacao:
-            with st.spinner("Atualizando planilha, favor não clicar em nenhum botão nessa janela..."):
-                preencher_coluna_dia(mes, ano)
-                limpar_colunas()
-                preencher_intervalo_ipca(mes, ano)
-                calcular_total_porcentagem()
-                
-                dados_ipca = carregar_dados_excel('IPCA-Teste.xlsx')
-                ultimo_mes = obter_ultimo_mes(dados_ipca)
-                st.write(f"Último mês preenchido na planilha: {ultimo_mes}")
-                st.success("Planilha atualizada com sucesso!")
+            hoje = datetime.today()
+            if ano > hoje.year or (ano == hoje.year and mes >= hoje.month):
+                st.error("Erro: Só é possível selecionar um mês até o mês passado.")
+            else:
+                with st.spinner("Atualizando planilha, favor não clicar em nenhum botão nessa janela..."):
+                    preencher_coluna_dia(mes, ano)
+                    limpar_colunas()
+                    preencher_intervalo_ipca(mes, ano)
+                    calcular_total_porcentagem()
+
+                    dados_ipca = carregar_dados_excel('IPCA-Teste.xlsx')
+                    ultimo_mes = obter_ultimo_mes(dados_ipca)
+                    st.write(f"Último mês preenchido na planilha: {ultimo_mes}")
+                    st.success("Planilha atualizada com sucesso!")
