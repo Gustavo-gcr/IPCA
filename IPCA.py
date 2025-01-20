@@ -214,4 +214,32 @@ if pagina_selecionada == "Selecionar Planilha":
     st.title("Selecionar Planilha e Calcular IPCA")
     arquivo = st.file_uploader("Faça upload de sua planilha", type=["xlsx"])
 
-   
+    if arquivo:
+        try:
+            # Carrega o arquivo Excel e verifica as colunas necessárias
+            df = pd.read_excel(arquivo, engine="openpyxl")
+            if "valor" in df.columns and "data" in df.columns:
+                # Converte a coluna de data
+                df["data"] = pd.to_datetime(df["data"], errors="coerce")
+                df = df.dropna(subset=["data"])  # Remove linhas com datas inválidas
+
+                # Adiciona uma coluna para o IPCA calculado
+                st.write("Calculando IPCA para todas as linhas. Isso pode levar algum tempo...")
+
+                def calcular_ipca_em_lote(linhas):
+                    ipca_calculado = []
+                    for _, row in linhas.iterrows():
+                        mes = row["data"].month
+                        ano = row["data"].year
+                        ipca_mensal = buscar_ipca(mes, ano)
+                        if ipca_mensal is not None:
+                            ipca_calculado.append(row["valor"] * (1 + ipca_mensal))
+                        else:
+                            ipca_calculado.append(None)  # Marca como NaN se o IPCA não for encontrado
+                    return ipca_calculado
+
+           
+            else:
+                st.error("A planilha deve conter as colunas 'valor' e 'data'.")
+        except Exception as e:
+            st.error(f"Ocorreu um erro ao processar a planilha: {e}")
