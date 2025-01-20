@@ -158,7 +158,7 @@ def calcular_total_porcentagem():
 
 # Interface do Streamlit
 st.sidebar.title("Navegação")
-pagina_selecionada = st.sidebar.radio("Selecione a Página", ["Calculadora", "Atualizar Planilha"])
+pagina_selecionada = st.sidebar.radio("Selecione a Página", ["Calculadora", "Atualizar Planilha","Selecionar Planilha"])
 
 if pagina_selecionada == "Calculadora":
     st.title("Calculadora de Juros IPCA")
@@ -210,3 +210,8 @@ if pagina_selecionada == "Atualizar Planilha":
                     ultimo_mes = obter_ultimo_mes(dados_ipca)
                     st.write(f"Último mês preenchido na planilha: {ultimo_mes}")
                     st.success("Planilha atualizada com sucesso!")
+if pagina_selecionada == "Selecionar Planilha":
+    st.title("Selecionar Planilha e Calcular IPCA")
+    arquivo = st.file_uploader("Faça upload de sua planilha", type=["xlsx"])
+
+   
