@@ -210,37 +210,37 @@ if pagina_selecionada == "Atualizar Planilha":
                     ultimo_mes = obter_ultimo_mes(dados_ipca)
                     st.write(f"Último mês preenchido na planilha: {ultimo_mes}")
                     st.success("Planilha atualizada com sucesso!")
-if pagina_selecionada == "Selecionar Planilha":
-    st.title("Selecionar Planilha e Calcular IPCA")
-    arquivo = st.file_uploader("Faça upload de sua planilha", type=["xlsx"])
+# if pagina_selecionada == "Selecionar Planilha":
+#     st.title("Selecionar Planilha e Calcular IPCA")
+#     arquivo = st.file_uploader("Faça upload de sua planilha", type=["xlsx"])
 
-    if arquivo:
-        df = pd.read_excel(arquivo, sheet_name=None, engine='openpyxl')
-        if "valor" in df and "data" in df:
-            planilha_valor = df["valor"]
-            planilha_data = df["data"]
+#     if arquivo:
+#         df = pd.read_excel(arquivo, sheet_name=None, engine='openpyxl')
+#         if "valor" in df and "data" in df:
+#             planilha_valor = df["valor"]
+#             planilha_data = df["data"]
             
-            if "valor" in planilha_valor.columns and "data" in planilha_data.columns:
-                planilha_valor["data"] = pd.to_datetime(planilha_data["data"], errors='coerce')
-                planilha_valor["IPCA Calculado"] = planilha_valor.apply(
-                    lambda row: row["valor"] * buscar_ipca(row["data"].month, row["data"].year),
-                    axis=1
-                )
+#             if "valor" in planilha_valor.columns and "data" in planilha_data.columns:
+#                 planilha_valor["data"] = pd.to_datetime(planilha_data["data"], errors='coerce')
+#                 planilha_valor["IPCA Calculado"] = planilha_valor.apply(
+#                     lambda row: row["valor"] * buscar_ipca(row["data"].month, row["data"].year),
+#                     axis=1
+#                 )
                 
-                st.write("Planilha processada com sucesso. Visualize abaixo:")
-                st.dataframe(planilha_valor)
+#                 st.write("Planilha processada com sucesso. Visualize abaixo:")
+#                 st.dataframe(planilha_valor)
 
-                # Disponibilizar para download
-                caminho_saida = "planilha_atualizada.xlsx"
-                planilha_valor.to_excel(caminho_saida, index=False)
-                with open(caminho_saida, "rb") as f:
-                    st.download_button(
-                        label="Baixar Planilha Atualizada",
-                        data=f,
-                        file_name="planilha_atualizada.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                    )
-            else:
-                st.error("As abas 'valor' ou 'data' não contêm as colunas esperadas.")
-        else:
-            st.error("As abas 'valor' e 'data' não foram encontradas na planilha.")
+#                 # Disponibilizar para download
+#                 caminho_saida = "planilha_atualizada.xlsx"
+#                 planilha_valor.to_excel(caminho_saida, index=False)
+#                 with open(caminho_saida, "rb") as f:
+#                     st.download_button(
+#                         label="Baixar Planilha Atualizada",
+#                         data=f,
+#                         file_name="planilha_atualizada.xlsx",
+#                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+#                     )
+#             else:
+#                 st.error("As abas 'valor' ou 'data' não contêm as colunas esperadas.")
+#         else:
+#             st.error("As abas 'valor' e 'data' não foram encontradas na planilha.")
