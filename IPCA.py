@@ -242,4 +242,5 @@ if pagina_selecionada == "Selecionar Planilha":
                     )
             else:
                 st.error("As abas 'valor' ou 'data' não contêm as colunas esperadas.")
-       
+        else:
+            st.error("As abas 'valor' e 'data' não foram encontradas na planilha.")
